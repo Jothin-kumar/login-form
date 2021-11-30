@@ -55,9 +55,20 @@ def authenticate():
 def signup():
     username = flask.request.args.get('username')
     password = flask.request.args.get('password')
-    with open(username_and_password_file, 'a+') as username_and_passwords:
-        username_and_passwords.write(username + ' ' + password + '\n')
-    return 'Successful'
+    username_exists = False
+    if exists(username_and_password_file):
+        with open(username_and_password_file) as usernames_and_passwords:
+            for line in usernames_and_passwords.readlines():
+                if line != '\n':
+                        if line.split(' ')[0] == username:
+                            username_exists = True
+                            break
+    if username_exists:
+        return 'Username already exists'
+    else:
+        with open(username_and_password_file, 'a+') as username_and_passwords:
+            username_and_passwords.write(username + ' ' + password + '\n')
+        return 'Successful'
 
 
 if __name__ == '__main__':
