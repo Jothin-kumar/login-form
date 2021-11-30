@@ -25,10 +25,11 @@ Author: Jothin kumar (https://jothin-kumar.github.io)
 Repository link: https://github.com/Jothin-kumar/login-form
 """
 import flask
+from hashlib import sha256
 from os.path import exists
 
 app = flask.Flask(__name__)
-username_and_password_file = "username_and_passwords.txt"
+username_and_password_hashes_file = "username_and_passwords.txt"
 
 
 @app.route('/')
@@ -44,19 +45,17 @@ def scripts():
 @app.route('/authenticate')
 def authenticate():
     given_username = flask.request.args.get('username')
-    given_password = flask.request.args.get('password')
-    username_and_passwords = []
-    if exists(username_and_password_file):
-        with open(username_and_password_file) as usernames_and_passwords:
-            for line in usernames_and_passwords.readlines():
+    given_password_hash = sha256(flask.request.args.get('password').encode()).hexdigest()
+    username_and_passwords_hash = []
+    if exists(username_and_password_hashes_file):
+        with open(username_and_password_hashes_file) as usernames_and_password_hashes:
+            for line in usernames_and_password_hashes.readlines():
                 if line != '\n':
                     username = line.split(' ')[0]
-                    password = line.split(' ')
-                    del password[0]
-                    password = ''.join(password).replace('\n', '')
-                    username_and_passwords.append({'username': username, 'password': password})
-    for username_and_password in username_and_passwords:
-        if username_and_password['username'] == given_username and username_and_password['password'] == given_password:
+                    password_hash = line.split(' ')[1]
+                    username_and_passwords_hash.append({'username': username, 'password_hash': password_hash})
+    for username_and_password_hash in username_and_passwords_hash:
+        if username_and_password_hash['username'] == given_username and username_and_password_hash['password_hash'] == given_password_hash:
             return 'Authenticated'
     return 'Not Authenticated'
 
@@ -64,20 +63,20 @@ def authenticate():
 @app.route('/signup')
 def signup():
     username = flask.request.args.get('username')
-    password = flask.request.args.get('password')
+    password_hash = sha256(flask.request.args.get('password').encode()).hexdigest()
     username_exists = False
-    if exists(username_and_password_file):
-        with open(username_and_password_file) as usernames_and_passwords:
+    if exists(username_and_password_hashes_file):
+        with open(username_and_password_hashes_file) as usernames_and_passwords:
             for line in usernames_and_passwords.readlines():
                 if line != '\n':
-                        if line.split(' ')[0] == username:
-                            username_exists = True
-                            break
+                    if line.split(' ')[0] == username:
+                        username_exists = True
+                        break
     if username_exists:
         return 'Username already exists'
     else:
-        with open(username_and_password_file, 'a+') as username_and_passwords:
-            username_and_passwords.write(username + ' ' + password + '\n')
+        with open(username_and_password_hashes_file, 'a+') as username_and_password_hashes:
+            username_and_password_hashes.write(username + ' ' + password_hash + '\n')
         return 'Successful'
 
 
