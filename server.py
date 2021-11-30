@@ -31,6 +31,16 @@ app = flask.Flask(__name__)
 username_and_password_file = "username_and_passwords.txt"
 
 
+@app.route('/')
+def index():
+    return flask.send_file('index.html')
+
+
+@app.route('/scripts.js')
+def scripts():
+    return flask.send_file('scripts.js')
+
+
 @app.route('/authenticate')
 def authenticate():
     given_username = flask.request.args.get('username')
