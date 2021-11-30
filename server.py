@@ -51,8 +51,10 @@ def authenticate():
         with open(username_and_password_hashes_file) as usernames_and_password_hashes:
             for line in usernames_and_password_hashes.readlines():
                 if line != '\n':
-                    username = line.split(' ')[0]
-                    password_hash = line.split(' ')[1]
+                    username = line.split(' ')
+                    del username[-1]
+                    username = ' '.join(username)
+                    password_hash = line.split(' ')[-1]
                     username_and_passwords_hash.append({'username': username, 'password_hash': password_hash})
     for username_and_password_hash in username_and_passwords_hash:
         if username_and_password_hash['username'] == given_username and username_and_password_hash['password_hash'] == given_password_hash:
