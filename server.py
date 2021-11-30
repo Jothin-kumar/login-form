@@ -54,7 +54,7 @@ def authenticate():
                     username = line.split(' ')
                     del username[-1]
                     username = ' '.join(username)
-                    password_hash = line.split(' ')[-1]
+                    password_hash = line.split(' ')[-1].replace('\n', '')
                     username_and_passwords_hash.append({'username': username, 'password_hash': password_hash})
     for username_and_password_hash in username_and_passwords_hash:
         if username_and_password_hash['username'] == given_username and username_and_password_hash['password_hash'] == given_password_hash:
