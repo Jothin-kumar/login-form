@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login form - Jothin kumar</title>
     <script src="scripts.js"></script>
     <!---
     There are two functions in scripts.js:
@@ -10,5 +13,47 @@
     authenticate() returns true if the username and password are correct. It returns false if they are wrong.
     signup() returns true if the username is not reserved and successfully signed up. It returns false if it is reserved by another user.
     --->
+    <script>
+        function login_() {
+            var username = document.getElementById("login-username").value;
+            var password = document.getElementById("login-password").value;
+            if (authenticate(username, password)) {
+                alert("Login successful");
+            } else {
+                alert("Wrong username or password");
+            }
+        }
+        function signup_() {
+            var username = document.getElementById("signup-username").value;
+            var password = document.getElementById("signup-password").value;
+            if (signup(username, password)) {
+                alert("Successfully signed up");
+            } else {
+                alert("Username is reserved");
+            }
+        }
+    </script>
 </head>
+<body style="text-align: center;">
+    <header><h1>Login form</h1></header>
+    <br>
+    <div>
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <br>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <br>
+        <button onclick="login_()">Login</button>
+    </div>
+    <div>
+        <h2>Sign up</h2>
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <br>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <br>
+        <button onclick="signup_()">Sign up</button>
+    </div>
+    <br>
+    <footer><p>Made by: <strong><a href="https://jothin-kumar.github.io">Jothin kumar</a></strong></p></footer>
+</body>
 </html>
