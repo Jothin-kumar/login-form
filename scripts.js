@@ -24,7 +24,7 @@ SOFTWARE.
 Author: Jothin kumar (https://jothin-kumar.github.io)
 Repository link: https://github.com/Jothin-kumar/login-form
 */
-function httpGet(url){  // Source: https://stackoverflow.com/questions/247483/http-get-request-in-javascript
+function httpGet(url){  // Source: https://stackoverflow.com/a/4033310/15923012
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, false );
     xmlHttp.send(null);
